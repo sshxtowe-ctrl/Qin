@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>จดหมายจากแช้ม</title>
+
+<style>
+:root{
+  --purple:#6a4c93;
+  --yellow:#f9c74f;
+  --paper:#fffaf0;
+}
+
+/* พื้นหลัง */
+body{
+  margin:0;
+  font-family: 'Sarabun', sans-serif;
+  background: linear-gradient(135deg, var(--purple), #2f2245);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* การ์ดกระดาษ */
+.card{
+  background:var(--paper);
+  width:90%;
+  max-width:480px;
+  padding:40px 30px;
+  border-radius:16px;
+  box-shadow:0 12px 35px rgba(0,0,0,.35);
+  text-align:center;
+}
+
+/* ตัวอักษร */
+h1{
+  font-size:34px;
+  color:var(--purple);
+}
+
+h2{
+  font-size:26px;
+  color:var(--purple);
+}
+
+.text{
+  font-size:22px;
+  line-height:1.8;
+  white-space:pre-line;
+  min-height:120px;
+}
+
+/* ปุ่ม */
+button{
+  margin:10px;
+  padding:14px 24px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:var(--purple);
+  color:white;
+}
+
+button.alt{
+  background:var(--yellow);
+  color:#333;
+}
+
+/* รูป */
+img{
+  width:100%;
+  border-radius:12px;
+  margin:20px 0;
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div id="content"></div>
+</div>
+
+<script>
+const content = document.getElementById("content");
+
+/* 🔸 พิมพ์ช้ามาก */
+function typeText(text, callback){
+  content.innerHTML = `<div class="text"></div>`;
+  const box = document.querySelector(".text");
+  let i = 0;
+
+  const timer = setInterval(()=>{
+    box.textContent += text[i];
+    i++;
+    if(i >= text.length){
+      clearInterval(timer);
+      if(callback) setTimeout(callback, 1200);
+    }
+  }, 90); // <<< ความช้า (ยิ่งเลขมาก ยิ่งช้า)
+}
+
+/* หน้าแรก */
+function pageStart(){
+  content.innerHTML = `
+    <h1>จดหมายจากแช้ม</h1>
+    <p style="font-size:20px;">ถึงเธอในแก๊งนางฟ้า</p>
+    <button onclick="pageRead()">อ่าน</button>
+    <button class="alt" onclick="pageNo()">ไม่อ่าน</button>
+  `;
+}
+
+/* ไม่อ่าน */
+function pageNo(){
+  typeText("แช้มเคารพการตัดสินใจของวิวาห์นะ");
+}
+
+/* อ่าน */
+function pageRead(){
+  typeText(
+    "รู้ไหมวิวาห์สำคัญต่อชีวิตแช้มแค่ไหน ?\n\nอยู่ในทุกความทรงจำเลย",
+    beforeQuestion
+  );
+}
+
+function beforeQuestion(){
+  typeText(
+    "แล้วแช้มพอจะสำคัญในชีวิตวิวาห์รึเปล่า มาลองดูกันนะ\nตอบตามใจวิวาห์ได้เลย ไม่ต้องกลัว มีโอกาสเสมอ",
+    question1
+  );
+}
+
+/* คำถาม 1 */
+function question1(){
+  content.innerHTML = `
+    <h2>วิวาห์คิดว่าแช้มสบายใจตอนอยู่กับวิวาห์ไหม</h2>
+    <button onclick="alert('อือ ก็ถูกนะ'); question2()">สบายใจสิ</button>
+    <button onclick="alert('ไม่เป็นไร แช้มสบายใจมากเลย'); question2()">ไม่แน่ใจเลย . .</button>
+  `;
+}
+
+/* คำถาม 2 (ล็อค) */
+function question2(){
+  content.innerHTML = `
+    <h2>ในแก๊งนางฟ้า ใครสวยสุดในสายตาแช้ม ?</h2>
+    <button onclick="alert('ลองคิดดูใหม่นะ')">มาตา</button>
+    <button onclick="alert('ลองดูใหม่ไหม')">ไอช่า</button>
+    <button onclick="alert('อาจจะยังไม่ใช่นะ')">สาหัส</button>
+    <button onclick="alert('ลองคิดดูใหม่นะ')">ดาหลา</button>
+    <button onclick="alert('ยังไม่ใช่')">มินนี่</button>
+    <button onclick="afterLock()">วิวาห์</button>
+  `;
+}
+
+function afterLock(){
+  typeText("เก่งมาก วิวาห์รู้ใจแช้มที่สุด", questionFinal);
+}
+
+/* คำถามสุดท้าย */
+function questionFinal(){
+  content.innerHTML = `
+    <h2>วิวาห์คิดว่า แช้มเคยถ่ายรูปวิวาห์บ้างไหม ?</h2>
+    <button onclick="showPhoto()">เคยสิ</button>
+    <button onclick="showPhoto()">คนแบบแช้ม จะไปเคยได้ไง</button>
+  `;
+}
+
+/* รูป */
+function showPhoto(){
+  content.innerHTML = `
+    <img src="img/vv.jpg">
+    <div class="text"></div>
+  `;
+
+  const t = "จริง ๆ แช้มเก็บเธอไว้ในทุกช่วงเวลา\nแล้วจะไม่มีวันลืมเลยนะ";
+  const box = document.querySelector(".text");
+  let i = 0;
+
+  const timer = setInterval(()=>{
+    box.textContent += t[i];
+    i++;
+    if(i >= t.length){
+      clearInterval(timer);
+      setTimeout(letter, 1500);
+    }
+  }, 90);
+}
+
+/* จดหมาย */
+function letter(){
+  typeText(
+    "ถึงวิวาห์จะไม่อยากรู้\nแต่แช้มอยากบอกวิวาห์ว่า\n\nแช้มชอบวิวาห์นะ",
+    askLove
+  );
+}
+
+/* ขอคบ */
+function askLove(){
+  content.innerHTML = `
+    <h2>แช้มอยากให้วิวาห์<br>อยู่ข้าง ๆ ในชีวิตของแช้ม<br>ได้ไหม</h2>
+    <button onclick="alert('แช้มดีใจที่มีวิวาห์อยู่ข้าง ๆ นะ')">เป็นแฟนแชมป์</button>
+    <button class="alt" onclick="alert('ไม่ต้องรีบนะ แช้มรอได้เสมอ')">ขอคิดดูก่อน</button>
+  `;
+}
+
+pageStart();
+</script>
+
+</body>
+  </html>
